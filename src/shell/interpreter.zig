@@ -123,7 +123,7 @@ pub const StateKind = enum(u8) {
     expansion,
     if_clause,
     condexpr,
-    @"async",
+    async,
     subshell,
 };
 
@@ -1166,9 +1166,9 @@ pub const Interpreter = struct {
         return buffer.toNodeBuffer(globalThis);
     }
 
-    pub fn asyncCmdDone(this: *ThisInterpreter, asyncTask: *Async) void {
-        log("asyncCommandDone {f}", .{asyncTask});
-        asyncTask.actuallyDeinit();
+    pub fn asyncCmdDone(this: *ThisInterpreter, async: *Async) void {
+        log("asyncCommandDone {f}", .{async});
+        async.actuallyDeinit();
         this.async_commands_executing -= 1;
         if (this.async_commands_executing == 0 and this.exit_code != null) {
             this.finish(this.exit_code.?).run();
